@@ -1,0 +1,169 @@
+﻿<Window x:Class="AV_Rates.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:AV_Rates"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="800">
+    <Window.Resources>
+        <sys:String x:Key="from">From:</sys:String>
+        <sys:String x:Key="to">To:</sys:String>
+        <sys:String x:Key="digital">Digital currency:</sys:String>
+        <sys:String x:Key="market">Market:</sys:String>
+        <sys:String x:Key="select">Select...</sys:String>
+        <sys:String x:Key="exchangeRate">Exchange rates</sys:String>
+        <sys:String x:Key="digitalDaily">Digital currency daily</sys:String>
+    </Window.Resources>
+    <Grid>
+        <TabControl FontSize="14">
+            <TabItem Header="{StaticResource exchangeRate}">
+                <Grid HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="5*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label x:Name="lblFrom" Content="{StaticResource from}" />
+                        <Grid>
+                            <ComboBox x:Name="cbFrom" ItemsSource="{Binding Currencies}" SelectedItem="{Binding ExchangeModel.From}" MinWidth="100">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <ListBoxItem Content="{Binding Code}" ToolTip="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <TextBlock Text="{StaticResource select}" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=cbFrom,Path=SelectedItem}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                        <Label x:Name="lblTo" Content="{StaticResource to}" Margin="10,0,0,0" />
+                        <Grid>
+                            <ComboBox x:Name="cbTo"  ItemsSource="{Binding Currencies}" SelectedValue="{Binding ExchangeModel.To}" MinWidth="100">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <ListBoxItem Content="{Binding Code}" ToolTip="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <TextBlock Text="{StaticResource select}" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=cbTo,Path=SelectedItem}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+                    <TextBox x:Name="tbExchangeResult"
+                                 Grid.Row="1"
+                                 Grid.Column="1"
+                                 Grid.ColumnSpan="3"
+                                 MinHeight="200"
+                                 MinWidth="300"
+                                 MaxWidth="600" 
+                                 Margin="0,50,0,100"
+                                 TextWrapping="Wrap"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{StaticResource digitalDaily}">
+                <Grid HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Label x:Name="lblDigitalCurrency" Content="{StaticResource digital}" />
+                        <Grid>
+                            <ComboBox x:Name="cbDigital" ItemsSource="{Binding DigitalCurrencies}" SelectedItem="{Binding DailyModel.Symbol}" MinWidth="100">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <ListBoxItem Content="{Binding Code}" ToolTip="{Binding Name}" HorizontalAlignment="Center"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <TextBlock Text="{StaticResource select}" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=cbDigital,Path=SelectedItem}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                        <Label x:Name="lblMarket" Content="{StaticResource market}"  Margin="10,0,0,0"/>
+                        <Grid>
+                            <ComboBox x:Name="cbMarket" ItemsSource="{Binding PhysicalCurrencies}" SelectedValue="{Binding DailyModel.Market}" MinWidth="100">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <ListBoxItem Content="{Binding Code}" ToolTip="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <TextBlock Text="{StaticResource select}" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=cbMarket,Path=SelectedItem}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+                    <DataGrid x:Name="dgDailyDigital" 
+                              Grid.Row="1" 
+                              Grid.Column="0" 
+                              Grid.ColumnSpan="4"
+                              Margin="50,25,50,25"
+                              FontSize="13" 
+                              ColumnWidth="*" 
+                              ItemsSource="{Binding CryptoDailyDisplays}" 
+                              IsReadOnly="True">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="{x:Static ApplicationCommands.Copy}" Header="Copy"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                    </DataGrid>
+                    <Label x:Name="lblDaily" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center"></Label>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
+
+
+
+
